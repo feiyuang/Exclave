@@ -1353,7 +1353,29 @@ public class V2RayConfig {
         public String scMinPostsIntervalMs;
         public String xPaddingBytes;
         public Boolean noGRPCHeader;
+        public XmuxObject xmux;
+        public DownloadSettingsObject downloadSettings;
         public Boolean useBrowserForwarding;
+
+        public static class XmuxObject {
+            public String maxConcurrency;
+            public String maxConnections;
+            public String cMaxReuseTimes;
+            public String hMaxRequestTimes;
+            public String hMaxReusableSecs;
+        }
+
+        public static class DownloadSettingsObject {
+            public String address;
+            public Integer port;
+            public String network;
+            public String security;
+            public TLSObject tlsSettings;
+            public UTLSObject utlsSettings;
+            public RealityObject realitySettings;
+            public SplitHTTPObject splithttpSettings;
+            public SplitHTTPObject xhttpSettings;
+        }
 
     }
 

@@ -737,6 +737,7 @@ public class V2RayConfig {
         public String timeout;
         public String redirect;
         public Integer userLevel;
+        public Boolean interruptConnections;
 
     }
 
@@ -1113,10 +1114,7 @@ public class V2RayConfig {
         public String minVersion;
         public String maxVersion;
         public Boolean allowInsecureIfPinnedPeerCertificate;
-        public String echConfig;
-        public String echDohServer;
-        public String echQueryDomain;
-        public String echConfigList; // Xray-style
+        public ECHObject ech;
 
         public static class CertificateObject {
 
@@ -1125,6 +1123,15 @@ public class V2RayConfig {
             public String keyFile;
             public List<String> certificate;
             public List<String> key;
+
+        }
+
+        public static class ECHObject {
+
+            public Boolean enabled;
+            public String config;
+            public String queryDomain;
+            public String key;
 
         }
 

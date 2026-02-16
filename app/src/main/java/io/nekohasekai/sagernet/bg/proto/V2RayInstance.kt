@@ -265,7 +265,7 @@ abstract class V2RayInstance(
 
 
         if (!externalInstances.isNotEmpty() || config.requireWs || config.requireSh) {
-            sleep(100)
+            sleep(200)
         }
 
         v2rayPoint.start()

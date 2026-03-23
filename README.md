@@ -52,6 +52,28 @@ It is a fork of the archived Android proxy client SagerNet and uses a custom ove
 
 Starting in September 2026, Google will [block apps from "sideloading"](https://developer.android.com/developer-verification) on [certified Android devices](https://www.android.com/certified/partners/). If you are a user who values digital freedom, we need your voice to [express opposition](https://keepandroidopen.org/). Your support will not only help save this app, but also help defend software freedom and open distribution.
 
+## Explanation of terms
+
+[Exclave wiki](https://github.com/dyhkwong/Exclave/wiki). It contains some subjective comments. Viewer discretion is advised.
+
+## Translation
+
+Is Exclave not in your language, or the translation is incorrect or incomplete? Get involved in the translations on [Hosted Weblate](https://hosted.weblate.org/projects/exclave/).
+
+## Report a bug
+
+[Open a new issue](https://github.com/dyhkwong/Exclave/issues) if you encounter a bug. Do not report to upstream because the core used is heavily modified.
+
+- Please search for existing issues before opening a new one. Old versions are not supported, please make sure your are using the latest version.
+- For crashes, log file using "debug" log level is required. Log files may contain secret keys used to connect to servers. Please remove potential sensitive information or encrypt with GPG before posting them publicly.
+- For memory leak and high system resource usage, pprof profile is required. Long press "About" - "Version" to enable pprof HTTP server settings and kill and restart the app to take effect.
+- Encrypt with [this GPG public key](https://github.com/dyhkwong.gpg) if the issue contains sensitive information or you are reporting a vulnerability.
+
+## Discussion
+
+- [Public discussion](https://github.com/dyhkwong/Exclave/discussions) is always preferred because it can be viewed by everyone.
+- [Private chat group](https://t.me/s/exclavian).
+
 ## License
 
     Copyright (C) 2023  dyhkwong
@@ -72,27 +94,12 @@ Starting in September 2026, Google will [block apps from "sideloading"](https://
 
 ## Notice
 
-Exclave is licensed under the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. However, Exclave optionally incorporates code that is covered by the GNU General Public License as published by the Free Software Foundation, version 3. If `github.com/dyhkwong/libsagernetcore` is compiled with `with_clash` tag, the GNU General Public License as published by the Free Software Foundation, version 3, applies to all of Exclave.
-
-## Translation
-
-Is Exclave not in your language, or the translation is incorrect or incomplete? Get involved in the translations on [Hosted Weblate](https://hosted.weblate.org/projects/exclave/).
-
-## Report issues
-
-Please report issues [here](https://github.com/dyhkwong/Exclave/issues). Do not report issues to upstream because the core used is heavily modified.
-
-- For crashes, log file using "debug" log level is required. Log files may contain secret keys used to connect to servers. Please remove potential sensitive information or encrypt with GPG before posting them publicly.
-- For memory leak and high system resource usage, pprof profile is required. Long press "About" - "Version" to enable pprof HTTP server settings and kill and restart the app to take effect.
-- Encrypt with [this GPG public key](https://github.com/dyhkwong.gpg) if the issue contains sensitive information or you are reporting a vulnerability.
-
-## Explanation of terms
-
-[Exclave wiki](https://github.com/dyhkwong/Exclave/wiki). It contains some subjective comments. Viewer discretion is advised.
+Exclave is licensed under the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. However, Exclave optionally incorporates code covered by the GNU General Public License as published by the Free Software Foundation, version 3. If `github.com/dyhkwong/libsagernetcore` is compiled with `with_clash` tag, the GNU General Public License as published by the Free Software Foundation, version 3, applies to all of Exclave.
 
 ## Build from source
 
 The following procedures are only applicable to a typical AMD64 Linux distros. It is possible to build on other platforms but the procedures may vary.
+
 - Install and configure JDK 21, Go 1.25 and Go Mobile.
 - Install and configure Android SDK Platform 36, Android SDK Build-Tools 36.1.0, Android SDK Platform-Tools and Android NDK r29 through Android Studio or Android SDK Command-line Tools.
 - Replace `release.keystore` with your own. It can be generated with Java `keytool`.

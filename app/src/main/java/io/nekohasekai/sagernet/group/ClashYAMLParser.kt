@@ -406,12 +406,12 @@ fun parseClashProxy(proxy: Map<String, Any?>): List<AbstractBean> {
                         }
                     }
                     JsonObject().apply {
-                        opts.getInt("sc-max-each-post-bytes")?.also {
+                        /*opts.getInt("sc-max-each-post-bytes")?.also {
                             addProperty("scMaxEachPostBytes", it)
                         }
                         opts.getInt("sc-min-posts-interval-ms")?.also {
                             addProperty("scMinPostsIntervalMs", it)
-                        }
+                        }*/
                         opts.getBoolean("no-grpc-header")?.also {
                             addProperty("noGRPCHeader", it)
                         }

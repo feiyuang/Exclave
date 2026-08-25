@@ -52,28 +52,13 @@ fun parseHysteria2(rawURL: String): Hysteria2Bean {
         link.queryParameter("mport")?.takeIf { it.isValidHysteriaMultiPort() }?.also {
             serverPorts = it
         }
-        when {
-            // Warning: Do not use colon in username or password in so-called `userpass` authentication.
-            // Official Hysteria2 server can not handle it correctly.
-            // need to handle so-called broken "userpass" authentication
-            link.username.isEmpty() && link.password.isEmpty() -> {
-                if (rawURL.substringAfter("://").substringBefore("@") == ":") {
-                    auth = ":"
-                }
-            }
-            link.username.isNotEmpty() && link.password.isEmpty() -> {
-                auth = if (rawURL.substringAfter("://").substringBefore("@").endsWith(":")) {
-                    link.username + ":"
-                } else {
-                    link.username
-                }
-            }
-            link.username.isEmpty() && link.password.isNotEmpty() -> {
-                auth = ":" + link.password
-            }
-            link.username.isNotEmpty() && link.password.isNotEmpty() -> {
-                auth = link.username + ":" + link.password
-            }
+        // Warning: Do not use colon in username or password in so-called `userpass` authentication.
+        // Official Hysteria2 server can not handle it correctly.
+        // need to handle so-called broken "userpass" authentication
+        auth = if (link.hasPassword()) {
+            link.username + ":" + link.password
+        } else {
+            link.username
         }
         link.queryParameter("sni")?.also {
             sni = it

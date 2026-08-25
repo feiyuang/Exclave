@@ -108,10 +108,10 @@ fun parseV2Ray(link: String): StandardV2RayBean {
 
     if (bean is TrojanBean) {
         // https://github.com/trojan-gfw/igniter/issues/318
-        if (url.hasPassword()) {
-            bean.password = url.username + ":" + url.password
+        bean.password = if (url.hasPassword()) {
+            url.username + ":" + url.password
         } else {
-            bean.password = url.username
+            url.username
         }
     } else {
         bean.uuid = uuidOrGenerate(url.username)

@@ -25,9 +25,9 @@ import com.google.gson.JsonObject
 import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
 import io.nekohasekai.sagernet.ktx.*
 import libexclavecore.Libexclavecore
-import java.util.Base64
 import kotlin.collections.filter
 import kotlin.collections.isNotEmpty
+import kotlin.io.encoding.Base64
 import kotlin.text.isNotEmpty
 
 val supportedVmessMethod = arrayOf(
@@ -216,7 +216,7 @@ fun parseV2Ray(link: String): StandardV2RayBean {
             url.queryParameter("ech")?.let {
                 bean.echEnabled = true
                 try {
-                    Base64.getDecoder().decode(it)
+                    Base64.decode(it)
                     bean.echConfig = it
                 } catch (_: Exception) {}
             }
@@ -719,6 +719,7 @@ fun StandardV2RayBean.toUri(): String? {
                         || !(parts[2] == "1rtt" || parts[2] == "0rtt")) {
                         error("unsupported vless encryption")
                     }
+                    // TODO: validate VLESS encryption
                     builder.addQueryParameter("encryption", encryption)
                 }
             }
@@ -923,7 +924,11 @@ fun StandardV2RayBean.toUri(): String? {
                 builder.addQueryParameter("allowInsecure", "1")
             }
             if (pinnedPeerCertificateSha256.isNotEmpty()) {
-                builder.addQueryParameter("pcs", pinnedPeerCertificateSha256.listByLineOrComma().joinToString(","))
+                val hashes = pinnedPeerCertificateSha256.listByLineOrComma()
+                for (hash in hashes) {
+                    require(hash.hexToByteArray().size == 32)
+                }
+                builder.addQueryParameter("pcs", hashes.joinToString(","))
             }
             if (serverNameToVerify.isNotEmpty()) {
                 val serverNames = serverNameToVerify.listByLineOrComma()
@@ -938,11 +943,26 @@ fun StandardV2RayBean.toUri(): String? {
             if (sni.isNotEmpty()) {
                 builder.addQueryParameter("sni", sni)
             }
+            try {
+                require(Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).decode(realityPublicKey).size == 32)
+            } catch (_: Exception) {
+                throw IllegalArgumentException("invalid pbk")
+            }
             builder.addQueryParameter("pbk", realityPublicKey.ifEmpty { error("empty reality public key") })
             if (realityShortId.isNotEmpty()) {
+                try {
+                    require(realityShortId.hexToByteArray().size <= 8)
+                } catch (_: Exception) {
+                    throw IllegalArgumentException("invalid sid")
+                }
                 builder.addQueryParameter("sid", realityShortId)
             }
             if (realityMldsa65Verify.isNotEmpty()) {
+                try {
+                    require(Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).decode(realityMldsa65Verify).size == 1952)
+                } catch (_: Exception) {
+                    throw IllegalArgumentException("invalid pqv")
+                }
                 builder.addQueryParameter("pqv", realityMldsa65Verify)
             }
             builder.addQueryParameter("fp", "chrome") // "chrome" is only a placeholder because "若使用 REALITY，此项不可省略。".

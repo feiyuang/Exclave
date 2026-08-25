@@ -24,6 +24,7 @@ import io.nekohasekai.sagernet.ktx.isValidHysteriaPort
 import io.nekohasekai.sagernet.ktx.listByLineOrComma
 import io.nekohasekai.sagernet.ktx.queryParameter
 import libexclavecore.Libexclavecore
+import kotlin.io.encoding.Base64
 
 fun parseHysteria2(rawURL: String): Hysteria2Bean {
     var url = rawURL
@@ -104,9 +105,7 @@ fun parseHysteria2(rawURL: String): Hysteria2Bean {
 }
 
 fun Hysteria2Bean.toUri(): String? {
-    if (!serverPorts.isValidHysteriaPort()) {
-        error("invalid port")
-    }
+    require(serverPorts.isValidHysteriaPort()) { "invalid port" }
 
     val builder = Libexclavecore.newURL("hysteria2").apply {
         // fuck port hopping URL
@@ -132,16 +131,26 @@ fun Hysteria2Bean.toUri(): String? {
         builder.addQueryParameter("insecure", "1")
     }
     if (pinnedPeerCertificateSha256.isNotEmpty()) {
-        builder.addQueryParameter("pinSHA256", pinnedPeerCertificateSha256.listByLineOrComma()[0].replace(":", "").lowercase())
+        val pinSHA256 = pinnedPeerCertificateSha256.listByLineOrComma()[0].replace(":", "").lowercase()
+        try {
+            require(pinSHA256.hexToByteArray().size == 32)
+        } catch (_: Exception) {
+            throw IllegalArgumentException("invalid pinSHA256")
+        }
+        builder.addQueryParameter("pinSHA256", pinSHA256)
     }
     if (obfsType.isNotEmpty()) {
         builder.addQueryParameter("obfs", obfsType)
-        if (obfsPassword.isEmpty()) {
-            error("empty obfs password")
-        }
+        require(obfsPassword.toByteArray().size >= 4) { "invalid obfs password" }
         builder.addQueryParameter("obfs-password", obfsPassword)
     }
     if (echEnabled && echConfig.isNotEmpty()) {
+        try {
+            // TODO: validate echConfig
+            Base64.decode(echConfig)
+        } catch (_: Exception) {
+            throw IllegalArgumentException("invalid ech")
+        }
         builder.addQueryParameter("ech", echConfig)
     }
     if (name.isNotEmpty()) {

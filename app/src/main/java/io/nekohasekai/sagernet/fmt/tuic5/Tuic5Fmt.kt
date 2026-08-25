@@ -57,7 +57,7 @@ fun parseTuic(server: String): AbstractBean {
     }
 
     try {
-        Uuid.parse(link.username)
+        Uuid.parseHexDash(link.username)
     } catch (_: Exception) {
         error("unsupported")
     }
@@ -117,7 +117,8 @@ fun parseTuic(server: String): AbstractBean {
 fun Tuic5Bean.toUri(): String? {
     val builder = Libexclavecore.newURL("tuic").apply {
         setHostPort(serverAddress, serverPort)
-        username = uuid.ifEmpty { error("empty uuid") }
+        require(Uuid.parseHexDashOrNull(uuid) != null) { "invalid uuid" }
+        username = uuid
         if (name.isNotEmpty()) {
             fragment = name
         }

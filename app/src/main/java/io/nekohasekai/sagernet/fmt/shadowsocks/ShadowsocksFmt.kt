@@ -131,11 +131,12 @@ fun ShadowsocksBean.toUri(): String? {
     builder.setHostPort(serverAddress, serverPort)
     if (method in supportedShadowsocks2022Method) {
         builder.username = method
-        if (password.isNotEmpty()) {
-            builder.password = password
-        } else {
-            error("empty password")
+        try {
+            require(Base64.decode(password).size == if (method == "2022-blake3-aes-128-gcm") 16 else 32)
+        } catch (_: Exception) {
+            throw IllegalArgumentException("invalid password")
         }
+        builder.password = password
     } else {
         builder.username = Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).encode("$method:$password".toByteArray())
     }

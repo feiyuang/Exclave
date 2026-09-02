@@ -354,7 +354,7 @@
         },
         {
             "uniqueId": "com.google.protobuf:protobuf-java",
-            "artifactVersion": "4.36.0"
+            "artifactVersion": "4.36.1"
         },
         {
             "uniqueId": "com.google.zxing:core",
@@ -430,7 +430,7 @@
         },
         {
             "uniqueId": "org.yaml:snakeyaml",
-            "artifactVersion": "2.6"
+            "artifactVersion": "2.7"
         }
     ]
 }

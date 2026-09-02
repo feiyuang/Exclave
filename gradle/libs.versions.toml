@@ -36,8 +36,8 @@ material = { module = "com.google.android.material:material", version = "1.14.0"
 gson = { module = "com.google.code.gson:gson", version = "2.14.0" }
 bouncycastle = { module = "org.bouncycastle:bcpkix-jdk18on", version = "1.85" }
 zxing-core = { module = "com.google.zxing:core", version = "3.5.4" }
-protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "4.36.0" }
-snakeyaml = { module = "org.yaml:snakeyaml", version = "2.6" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "4.36.1" }
+snakeyaml = { module = "org.yaml:snakeyaml", version = "2.7" }
 material-about-library = { module = "com.github.daniel-stoneuk:material-about-library", version = "3.2.0-rc01" }
 process-phoenix = { module = "com.jakewharton:process-phoenix", version = "3.0.0" }
 kryo = { module = "com.esotericsoftware:kryo", version = "5.6.2" }

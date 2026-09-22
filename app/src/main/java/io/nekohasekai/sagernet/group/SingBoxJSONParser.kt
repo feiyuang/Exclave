@@ -27,6 +27,7 @@ import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.fmt.AbstractBean
 import io.nekohasekai.sagernet.fmt.anytls.AnyTLSBean
 import io.nekohasekai.sagernet.fmt.http.HttpBean
+import io.nekohasekai.sagernet.fmt.http3.Http3Bean
 import io.nekohasekai.sagernet.fmt.hysteria2.Hysteria2Bean
 import io.nekohasekai.sagernet.fmt.naive.NaiveBean
 import io.nekohasekai.sagernet.fmt.shadowsocks.ShadowsocksBean
@@ -283,6 +284,33 @@ fun parseSingBoxOutbound(outbound: JsonObject): List<AbstractBean> {
                     }
                     outbound.getString("password")?.also {
                         v2rayBean.password = it
+                    }
+                    outbound.getInt("version")?.takeIf { it == 3 }?.also {
+                        if ((v2rayBean.type.isNullOrEmpty() || v2rayBean.type == "tcp")
+                            && (v2rayBean.headerType.isNullOrEmpty() || v2rayBean.headerType == "none")
+                            && (v2rayBean.security == "tls")) {
+                            val http3Bean = Http3Bean().apply {
+                                serverAddress = v2rayBean.serverAddress
+                                serverPort = v2rayBean.serverPort
+                                username = v2rayBean.username
+                                password = v2rayBean.password
+                                sni = v2rayBean.sni
+                                certificates = v2rayBean.certificates
+                                pinnedPeerCertificateChainSha256 = v2rayBean.pinnedPeerCertificateChainSha256
+                                pinnedPeerCertificatePublicKeySha256 = v2rayBean.pinnedPeerCertificatePublicKeySha256
+                                pinnedPeerCertificateSha256 = v2rayBean.pinnedPeerCertificateSha256
+                                allowInsecure = v2rayBean.allowInsecure
+                                echEnabled = v2rayBean.echEnabled
+                                echConfigList = v2rayBean.echConfigList
+                                echQueryName = v2rayBean.echQueryName
+                                echConfigList = v2rayBean.echConfigList
+                                echQueryName = v2rayBean.echQueryName
+                                mtlsCertificate = v2rayBean.mtlsCertificate
+                                mtlsCertificatePrivateKey = v2rayBean.mtlsCertificatePrivateKey
+                                serverNameToVerify = v2rayBean.serverNameToVerify
+                            }
+                            return listOf(http3Bean)
+                        }
                     }
                 }
                 "shadowsocks" -> {

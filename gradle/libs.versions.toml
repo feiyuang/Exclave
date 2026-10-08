@@ -1,6 +1,6 @@
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "9.4.1" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version = "2.4.20" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version = "2.4.21" }
 github-api = { module = "org.kohsuke:github-api", version = "1.330" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version = "5.5.0" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version = "1.11.0" }

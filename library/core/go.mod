@@ -2,7 +2,7 @@ module libexclavecore
 
 go 1.26.0
 
-require github.com/exclavenetwork/libexclavecore v0.0.0-20261008161255-db17de431fff
+require github.com/exclavenetwork/libexclavecore v0.0.0-20261008193310-6e1351735e85
 
 require (
 	filippo.io/age v1.3.2 // indirect
@@ -16,7 +16,7 @@ require (
 	github.com/dgryski/go-camellia v0.0.0-20191119043421-69a8a13fb23d // indirect
 	github.com/dgryski/go-metro v0.0.0-20250106013310-edb8663e5e33 // indirect
 	github.com/enfein/mieru/v3 v3.38.0 // indirect
-	github.com/exclavenetwork/exclave-core/v5 v5.50.1-0.20261008160952-384e6aea719e // indirect
+	github.com/exclavenetwork/exclave-core/v5 v5.50.1-0.20261008193150-b6137e3dcc83 // indirect
 	github.com/exclavenetwork/go-stun v0.1.7-0.20260811120819-d09f4628f065 // indirect
 	github.com/exclavenetwork/hysteria/core/v2 v2.13.0-1 // indirect
 	github.com/exclavenetwork/hysteria/extras/v2 v2.13.0-1 // indirect
@@ -64,7 +64,7 @@ require (
 	golang.org/x/crypto v0.57.1-0.20261005185213-c3db4df58582 // indirect
 	golang.org/x/exp v0.0.0-20250911091902-df9299821621 // indirect
 	golang.org/x/mobile v0.0.0-20260908204917-8b95e45f8d3e // indirect
-	golang.org/x/net v0.59.1-0.20261006191956-01e3d0338c22 // indirect
+	golang.org/x/net v0.60.0 // indirect
 	golang.org/x/sys v0.48.0 // indirect
 	golang.org/x/text v0.42.0 // indirect
 	golang.org/x/time v0.16.0 // indirect

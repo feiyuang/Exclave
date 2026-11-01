@@ -54,6 +54,7 @@ private enum class Tag(val code: Long) {
     Name(0x0C),
     DNSUptreams(0x0D),
     SubscriptionURL(0x0E),
+    ClientRandomAuthKey(0x0F),
 }
 
 private enum class Version(val code: Byte) {
@@ -235,7 +236,7 @@ fun parseTrustTunnel(url: String): List<TrustTunnelBean> {
                     require(value[0] == AntiDPI.False.code || value[0] == AntiDPI.True.code) { "invalid AntiDPI" }
                 }
                 Tag.ClientRandomPrefix.code -> {
-                    // ignored
+                    error("client random prefix unsupported")
                 }
                 Tag.Name.code -> {
                     bean.name = String(value)
@@ -247,7 +248,10 @@ fun parseTrustTunnel(url: String): List<TrustTunnelBean> {
                 }
                 Tag.SubscriptionURL.code -> {
                     hasSubscriptionURL = true
-                    // ignored, 脱裤子放屁
+                    // ignored, what the fuck is this
+                }
+                Tag.ClientRandomAuthKey.code -> {
+                    error("client random auth key unsupported")
                 }
                 else -> {
                     // "A parser MUST ignore unknown tags to allow forward-compatible extensions."

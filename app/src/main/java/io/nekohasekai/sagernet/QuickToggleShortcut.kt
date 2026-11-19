@@ -25,10 +25,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.ShortcutManager
-import android.os.Build
 import android.os.Bundle
-import androidx.core.content.getSystemService
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -88,11 +85,9 @@ class QuickToggleShortcut : Activity(), SagerConnection.Callback {
         } else {
             profileId = intent.getLongExtra("profile", -1L)
             connection.connect(this, this)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                getSystemService<ShortcutManager>()!!.reportShortcutUsed(
-                    if (profileId >= 0L) "shortcut-profile-$profileId" else "toggle"
-                )
-            }
+            ShortcutManagerCompat.reportShortcutUsed(this,
+                if (profileId >= 0L) "shortcut-profile-$profileId" else "toggle"
+            )
         }
     }
 

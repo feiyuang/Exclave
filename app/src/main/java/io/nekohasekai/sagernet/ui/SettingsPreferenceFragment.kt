@@ -45,6 +45,8 @@ import io.nekohasekai.sagernet.Key.MODE_VPN
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
 import io.nekohasekai.sagernet.ktx.*
+import io.nekohasekai.sagernet.tasker.TaskerActivity
+import io.nekohasekai.sagernet.tasker.TaskerReceiver
 import io.nekohasekai.sagernet.ui.profile.ProfileSettingsActivity
 import io.nekohasekai.sagernet.utils.PackageCache
 import io.nekohasekai.sagernet.utils.Theme
@@ -622,6 +624,46 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
                 startActivity(intent)
             }
             true
+        }
+
+        findPreference<SwitchPreference>(Key.DISABLE_TOGGLE_SHORTCUT)!!.apply {
+            if (isChecked) {
+                runOnIoDispatcher {
+                    if (QuickToggleShortcut.enabled) {
+                        QuickToggleShortcut.enabled = false
+                        SagerNet.setDynamicShortcuts(requireContext())
+                    }
+                }
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                newValue as Boolean
+                runOnIoDispatcher {
+                    QuickToggleShortcut.enabled = !newValue
+                    SagerNet.setDynamicShortcuts(requireContext())
+                }
+                true
+            }
+        }
+
+        findPreference<SwitchPreference>(Key.DISABLE_TASKER_INTEGRATION)!!.apply {
+            if (isChecked) {
+                runOnIoDispatcher {
+                    if (TaskerReceiver.enabled) {
+                        TaskerReceiver.enabled = false
+                    }
+                    if (TaskerActivity.enabled) {
+                        TaskerActivity.enabled = false
+                    }
+                }
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                newValue as Boolean
+                runOnIoDispatcher {
+                    TaskerReceiver.enabled = !newValue
+                    TaskerActivity.enabled = !newValue
+                }
+                true
+            }
         }
     }
 

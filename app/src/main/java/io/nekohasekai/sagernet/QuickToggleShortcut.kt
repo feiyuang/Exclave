@@ -21,8 +21,10 @@
 package io.nekohasekai.sagernet
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
@@ -34,6 +36,7 @@ import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.bg.SagerConnection
 import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.ktx.app
 
 @Suppress("DEPRECATION")
 class QuickToggleShortcut : Activity(), SagerConnection.Callback {
@@ -47,6 +50,26 @@ class QuickToggleShortcut : Activity(), SagerConnection.Callback {
             .setShortLabel(context.getString(R.string.quick_toggle))
             .setLongLabel(context.getString(R.string.quick_toggle))
             .build()
+
+        private val componentName by lazy { ComponentName(app, QuickToggleShortcut::class.java) }
+        var enabled: Boolean
+            get() = when (app.packageManager.getComponentEnabledSetting(componentName)) {
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED -> true
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED -> false
+                PackageManager.COMPONENT_ENABLED_STATE_DEFAULT -> {
+                    app.packageManager.getReceiverInfo(componentName, 0).enabled
+                }
+                else -> true
+            }
+            set(value) = app.packageManager.setComponentEnabledSetting(
+                componentName,
+                if (value) {
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                } else {
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                },
+                PackageManager.DONT_KILL_APP,
+            )
     }
 
     private val connection = SagerConnection()
@@ -54,6 +77,10 @@ class QuickToggleShortcut : Activity(), SagerConnection.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (DataStore.disableTaskerIntegration) {
+            enabled = false
+            finish()
+        }
         if (intent.action == Intent.ACTION_CREATE_SHORTCUT) {
             setResult(RESULT_OK, ShortcutManagerCompat.createShortcutResultIntent(
                 this, buildShortcut(this)))

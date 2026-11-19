@@ -77,7 +77,7 @@ class QuickToggleShortcut : Activity(), SagerConnection.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (DataStore.disableTaskerIntegration) {
+        if (DataStore.disableToggleShortcut) {
             enabled = false
             finish()
         }

@@ -48,12 +48,13 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     fun init() {
         configurationStore.registerChangeListener(this)
 
+        // BuildConfig.VERSION_CODE is the version code of the armeabi-v7a APK
         val previousVersionCode = configurationStore.getInt(Key.APP_VERSION_CODE)
         if (previousVersionCode != BuildConfig.VERSION_CODE) {
             configurationStore.putInt(Key.APP_VERSION_CODE, BuildConfig.VERSION_CODE)
         }
 
-        if (previousVersionCode == null || previousVersionCode < 2090 /* migrate from 0.17.68 */) {
+        if (previousVersionCode == null || previousVersionCode < 2092 /* migrate from 0.17.68 */) {
             // migrate from 0.14.10
             // 0: Disable, 1: Enable, 2: Prefer, 3: Only
             val ipv6Mode0 = configurationStore.getString("ipv6Mode0")?.toIntOrNull()

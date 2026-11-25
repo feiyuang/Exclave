@@ -557,14 +557,6 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
         if (bean is VLESSBean && xtlsFlow.value != fv[0]) {
             packetEncoding.value = pev[2]
         }
-        xtlsFlow.setOnPreferenceChangeListener { _, newValue ->
-            newValue as String
-            packetEncoding.isEnabled = newValue == fv[0]
-            if (newValue != fv[0]) {
-                packetEncoding.value = pev[2]
-            }
-            true
-        }
 
         ssExperimentsCategory = findPreference(Key.SERVER_SS_EXPERIMENTS_CATEGORY)!!
         fun updateMethod(method: String) {
@@ -604,6 +596,19 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
             newValue as Boolean
             muxConcurrency.isVisible = newValue
             muxPacketEncoding.isVisible = newValue
+            true
+        }
+
+        xtlsFlow.setOnPreferenceChangeListener { _, newValue ->
+            newValue as String
+            packetEncoding.isEnabled = newValue == fv[0]
+            if (newValue != fv[0]) {
+                packetEncoding.value = pev[2]
+            }
+            mux.isEnabled = newValue == fv[0]
+            if (newValue != fv[0]) {
+                mux.isChecked = false
+            }
             true
         }
 
